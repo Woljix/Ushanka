@@ -41,24 +41,42 @@
             this.single_textBox = new System.Windows.Forms.TextBox();
             this.single_pictureBox = new System.Windows.Forms.PictureBox();
             this.multiplePage = new System.Windows.Forms.TabPage();
-            this.button1 = new System.Windows.Forms.Button();
+            this.label4 = new System.Windows.Forms.Label();
+            this.multiple_logBox = new System.Windows.Forms.RichTextBox();
+            this.multiple_goButton = new System.Windows.Forms.Button();
             this.settingsPage = new System.Windows.Forms.TabPage();
-            this.button2 = new System.Windows.Forms.Button();
-            this.textBox1 = new System.Windows.Forms.TextBox();
+            this.button_logLocation = new System.Windows.Forms.Button();
+            this.settings_logTextBox = new System.Windows.Forms.TextBox();
+            this.label5 = new System.Windows.Forms.Label();
+            this.button_downloadLocation = new System.Windows.Forms.Button();
+            this.settings_downloadTextBox = new System.Windows.Forms.TextBox();
             this.label2 = new System.Windows.Forms.Label();
             this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
-            this.richTextBox1 = new System.Windows.Forms.RichTextBox();
+            this.helpLog = new System.Windows.Forms.Label();
+            this.settings_buttonSave = new System.Windows.Forms.Button();
+            this.multiple_usernameBox = new System.Windows.Forms.RichTextBox();
             this.label3 = new System.Windows.Forms.Label();
-            this.richTextBox2 = new System.Windows.Forms.RichTextBox();
-            this.label4 = new System.Windows.Forms.Label();
-            this.button3 = new System.Windows.Forms.Button();
-            this.textBox2 = new System.Windows.Forms.TextBox();
-            this.label5 = new System.Windows.Forms.Label();
+            this.helpUsernames = new System.Windows.Forms.Label();
+            this.goHelp = new System.Windows.Forms.Label();
+            this.label6 = new System.Windows.Forms.Label();
+            this.label7 = new System.Windows.Forms.Label();
+            this.label8 = new System.Windows.Forms.Label();
+            this.tabControl2 = new System.Windows.Forms.TabControl();
+            this.tabPage1 = new System.Windows.Forms.TabPage();
+            this.tabPage2 = new System.Windows.Forms.TabPage();
+            this.multiple_progressBar = new System.Windows.Forms.ProgressBar();
+            this.panel1 = new System.Windows.Forms.Panel();
+            this.label_log_filename = new System.Windows.Forms.Label();
+            this.label_log_username = new System.Windows.Forms.Label();
             this.tabControl1.SuspendLayout();
             this.singlePage.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.single_pictureBox)).BeginInit();
             this.multiplePage.SuspendLayout();
             this.settingsPage.SuspendLayout();
+            this.tabControl2.SuspendLayout();
+            this.tabPage1.SuspendLayout();
+            this.tabPage2.SuspendLayout();
+            this.panel1.SuspendLayout();
             this.SuspendLayout();
             // 
             // tabControl1
@@ -186,11 +204,12 @@
             // 
             // multiplePage
             // 
-            this.multiplePage.Controls.Add(this.label4);
-            this.multiplePage.Controls.Add(this.richTextBox2);
+            this.multiplePage.Controls.Add(this.tabControl2);
+            this.multiplePage.Controls.Add(this.goHelp);
+            this.multiplePage.Controls.Add(this.helpUsernames);
             this.multiplePage.Controls.Add(this.label3);
-            this.multiplePage.Controls.Add(this.richTextBox1);
-            this.multiplePage.Controls.Add(this.button1);
+            this.multiplePage.Controls.Add(this.multiple_usernameBox);
+            this.multiplePage.Controls.Add(this.multiple_goButton);
             this.multiplePage.Location = new System.Drawing.Point(4, 22);
             this.multiplePage.Name = "multiplePage";
             this.multiplePage.Padding = new System.Windows.Forms.Padding(3);
@@ -199,22 +218,46 @@
             this.multiplePage.Text = "Multiple";
             this.multiplePage.UseVisualStyleBackColor = true;
             // 
-            // button1
+            // label4
             // 
-            this.button1.Location = new System.Drawing.Point(6, 416);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(357, 23);
-            this.button1.TabIndex = 1;
-            this.button1.Text = "Go!";
-            this.button1.UseVisualStyleBackColor = true;
+            this.label4.AutoSize = true;
+            this.label4.Location = new System.Drawing.Point(166, 3);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(25, 13);
+            this.label4.TabIndex = 5;
+            this.label4.Text = "Log";
+            // 
+            // multiple_logBox
+            // 
+            this.multiple_logBox.Location = new System.Drawing.Point(6, 29);
+            this.multiple_logBox.Name = "multiple_logBox";
+            this.multiple_logBox.ReadOnly = true;
+            this.multiple_logBox.Size = new System.Drawing.Size(334, 200);
+            this.multiple_logBox.TabIndex = 4;
+            this.multiple_logBox.Text = "";
+            this.multiple_logBox.WordWrap = false;
+            // 
+            // multiple_goButton
+            // 
+            this.multiple_goButton.Location = new System.Drawing.Point(6, 428);
+            this.multiple_goButton.Name = "multiple_goButton";
+            this.multiple_goButton.Size = new System.Drawing.Size(357, 23);
+            this.multiple_goButton.TabIndex = 1;
+            this.multiple_goButton.Text = "Go!";
+            this.multiple_goButton.UseVisualStyleBackColor = true;
+            this.multiple_goButton.Click += new System.EventHandler(this.multiple_goButton_Click);
             // 
             // settingsPage
             // 
-            this.settingsPage.Controls.Add(this.button3);
-            this.settingsPage.Controls.Add(this.textBox2);
+            this.settingsPage.Controls.Add(this.label8);
+            this.settingsPage.Controls.Add(this.label7);
+            this.settingsPage.Controls.Add(this.label6);
+            this.settingsPage.Controls.Add(this.settings_buttonSave);
+            this.settingsPage.Controls.Add(this.button_logLocation);
+            this.settingsPage.Controls.Add(this.settings_logTextBox);
             this.settingsPage.Controls.Add(this.label5);
-            this.settingsPage.Controls.Add(this.button2);
-            this.settingsPage.Controls.Add(this.textBox1);
+            this.settingsPage.Controls.Add(this.button_downloadLocation);
+            this.settingsPage.Controls.Add(this.settings_downloadTextBox);
             this.settingsPage.Controls.Add(this.label2);
             this.settingsPage.Location = new System.Drawing.Point(4, 22);
             this.settingsPage.Name = "settingsPage";
@@ -224,21 +267,48 @@
             this.settingsPage.Text = "Settings";
             this.settingsPage.UseVisualStyleBackColor = true;
             // 
-            // button2
+            // button_logLocation
             // 
-            this.button2.Location = new System.Drawing.Point(297, 30);
-            this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(76, 23);
-            this.button2.TabIndex = 2;
-            this.button2.Text = "Browse..";
-            this.button2.UseVisualStyleBackColor = true;
+            this.button_logLocation.Location = new System.Drawing.Point(297, 90);
+            this.button_logLocation.Name = "button_logLocation";
+            this.button_logLocation.Size = new System.Drawing.Size(76, 23);
+            this.button_logLocation.TabIndex = 5;
+            this.button_logLocation.Text = "Browse..";
+            this.button_logLocation.UseVisualStyleBackColor = true;
+            this.button_logLocation.Click += new System.EventHandler(this.button_logLocation_Click);
             // 
-            // textBox1
+            // settings_logTextBox
             // 
-            this.textBox1.Location = new System.Drawing.Point(8, 32);
-            this.textBox1.Name = "textBox1";
-            this.textBox1.Size = new System.Drawing.Size(286, 20);
-            this.textBox1.TabIndex = 1;
+            this.settings_logTextBox.Location = new System.Drawing.Point(8, 92);
+            this.settings_logTextBox.Name = "settings_logTextBox";
+            this.settings_logTextBox.Size = new System.Drawing.Size(286, 20);
+            this.settings_logTextBox.TabIndex = 4;
+            // 
+            // label5
+            // 
+            this.label5.AutoSize = true;
+            this.label5.Location = new System.Drawing.Point(143, 76);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(72, 13);
+            this.label5.TabIndex = 3;
+            this.label5.Text = "Log Location:";
+            // 
+            // button_downloadLocation
+            // 
+            this.button_downloadLocation.Location = new System.Drawing.Point(297, 30);
+            this.button_downloadLocation.Name = "button_downloadLocation";
+            this.button_downloadLocation.Size = new System.Drawing.Size(76, 23);
+            this.button_downloadLocation.TabIndex = 2;
+            this.button_downloadLocation.Text = "Browse..";
+            this.button_downloadLocation.UseVisualStyleBackColor = true;
+            this.button_downloadLocation.Click += new System.EventHandler(this.button_downloadLocation_Click);
+            // 
+            // settings_downloadTextBox
+            // 
+            this.settings_downloadTextBox.Location = new System.Drawing.Point(8, 32);
+            this.settings_downloadTextBox.Name = "settings_downloadTextBox";
+            this.settings_downloadTextBox.Size = new System.Drawing.Size(286, 20);
+            this.settings_downloadTextBox.TabIndex = 1;
             // 
             // label2
             // 
@@ -249,13 +319,35 @@
             this.label2.TabIndex = 0;
             this.label2.Text = "Download Location:";
             // 
-            // richTextBox1
+            // helpLog
             // 
-            this.richTextBox1.Location = new System.Drawing.Point(6, 27);
-            this.richTextBox1.Name = "richTextBox1";
-            this.richTextBox1.Size = new System.Drawing.Size(360, 116);
-            this.richTextBox1.TabIndex = 2;
-            this.richTextBox1.Text = "";
+            this.helpLog.AutoSize = true;
+            this.helpLog.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.helpLog.Location = new System.Drawing.Point(307, 3);
+            this.helpLog.Name = "helpLog";
+            this.helpLog.Size = new System.Drawing.Size(15, 16);
+            this.helpLog.TabIndex = 7;
+            this.helpLog.Text = "?";
+            this.toolTip1.SetToolTip(this.helpLog, "This is just a log that the software writes to show you what it\r\nis doing.");
+            // 
+            // settings_buttonSave
+            // 
+            this.settings_buttonSave.Location = new System.Drawing.Point(8, 428);
+            this.settings_buttonSave.Name = "settings_buttonSave";
+            this.settings_buttonSave.Size = new System.Drawing.Size(365, 23);
+            this.settings_buttonSave.TabIndex = 6;
+            this.settings_buttonSave.Text = "Save";
+            this.settings_buttonSave.UseVisualStyleBackColor = true;
+            this.settings_buttonSave.Click += new System.EventHandler(this.button_save_Click);
+            // 
+            // multiple_usernameBox
+            // 
+            this.multiple_usernameBox.Location = new System.Drawing.Point(6, 27);
+            this.multiple_usernameBox.Name = "multiple_usernameBox";
+            this.multiple_usernameBox.Size = new System.Drawing.Size(360, 116);
+            this.multiple_usernameBox.TabIndex = 2;
+            this.multiple_usernameBox.Text = "";
+            this.multiple_usernameBox.WordWrap = false;
             // 
             // label3
             // 
@@ -266,48 +358,139 @@
             this.label3.TabIndex = 3;
             this.label3.Text = "Usernames (Seperate with a newline)";
             // 
-            // richTextBox2
+            // helpUsernames
             // 
-            this.richTextBox2.Location = new System.Drawing.Point(9, 171);
-            this.richTextBox2.Name = "richTextBox2";
-            this.richTextBox2.ReadOnly = true;
-            this.richTextBox2.Size = new System.Drawing.Size(354, 239);
-            this.richTextBox2.TabIndex = 4;
-            this.richTextBox2.Text = "";
+            this.helpUsernames.AutoSize = true;
+            this.helpUsernames.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.helpUsernames.Location = new System.Drawing.Point(320, 8);
+            this.helpUsernames.Name = "helpUsernames";
+            this.helpUsernames.Size = new System.Drawing.Size(15, 16);
+            this.helpUsernames.TabIndex = 6;
+            this.helpUsernames.Text = "?";
+            this.toolTip1.SetToolTip(this.helpUsernames, "Write usernames here seperated by new line\r\n\r\nExample:\r\ncoolestinstagramuser123\r\n" +
+        "memepage420\r\ncuteinstagramgirl\r\n");
             // 
-            // label4
+            // goHelp
             // 
-            this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(172, 155);
-            this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(25, 13);
-            this.label4.TabIndex = 5;
-            this.label4.Text = "Log";
+            this.goHelp.AutoSize = true;
+            this.goHelp.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.goHelp.Location = new System.Drawing.Point(320, 413);
+            this.goHelp.Name = "goHelp";
+            this.goHelp.Size = new System.Drawing.Size(15, 16);
+            this.goHelp.TabIndex = 8;
+            this.goHelp.Text = "?";
+            this.toolTip1.SetToolTip(this.goHelp, "Start a new background worker that tries to download\r\nevery possible image/video " +
+        "of the usernames that you have\r\nselected.\r\n\r\n(Note: This will also save your set" +
+        "tings)");
             // 
-            // button3
+            // label6
             // 
-            this.button3.Location = new System.Drawing.Point(297, 90);
-            this.button3.Name = "button3";
-            this.button3.Size = new System.Drawing.Size(76, 23);
-            this.button3.TabIndex = 5;
-            this.button3.Text = "Browse..";
-            this.button3.UseVisualStyleBackColor = true;
+            this.label6.AutoSize = true;
+            this.label6.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label6.Location = new System.Drawing.Point(328, 11);
+            this.label6.Name = "label6";
+            this.label6.Size = new System.Drawing.Size(15, 16);
+            this.label6.TabIndex = 7;
+            this.label6.Text = "?";
+            this.toolTip1.SetToolTip(this.label6, "The folder location that you want to download all of the images and videos to.\r\n");
             // 
-            // textBox2
+            // label7
             // 
-            this.textBox2.Location = new System.Drawing.Point(8, 92);
-            this.textBox2.Name = "textBox2";
-            this.textBox2.Size = new System.Drawing.Size(286, 20);
-            this.textBox2.TabIndex = 4;
+            this.label7.AutoSize = true;
+            this.label7.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label7.Location = new System.Drawing.Point(328, 71);
+            this.label7.Name = "label7";
+            this.label7.Size = new System.Drawing.Size(15, 16);
+            this.label7.TabIndex = 8;
+            this.label7.Text = "?";
+            this.toolTip1.SetToolTip(this.label7, "The folder location that you want the program to write the logs to.\r\n");
             // 
-            // label5
+            // label8
             // 
-            this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(143, 76);
-            this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(72, 13);
-            this.label5.TabIndex = 3;
-            this.label5.Text = "Log Location:";
+            this.label8.AutoSize = true;
+            this.label8.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label8.Location = new System.Drawing.Point(328, 409);
+            this.label8.Name = "label8";
+            this.label8.Size = new System.Drawing.Size(15, 16);
+            this.label8.TabIndex = 9;
+            this.label8.Text = "?";
+            this.toolTip1.SetToolTip(this.label8, "Saves the values above to a seperate file.\r\n\r\n(Note: Includes the usernames on th" +
+        "e \'Multiple\' page)\r\n");
+            // 
+            // tabControl2
+            // 
+            this.tabControl2.Controls.Add(this.tabPage2);
+            this.tabControl2.Controls.Add(this.tabPage1);
+            this.tabControl2.Location = new System.Drawing.Point(9, 149);
+            this.tabControl2.Name = "tabControl2";
+            this.tabControl2.SelectedIndex = 0;
+            this.tabControl2.Size = new System.Drawing.Size(354, 261);
+            this.tabControl2.TabIndex = 9;
+            // 
+            // tabPage1
+            // 
+            this.tabPage1.Controls.Add(this.multiple_logBox);
+            this.tabPage1.Controls.Add(this.label4);
+            this.tabPage1.Controls.Add(this.helpLog);
+            this.tabPage1.Location = new System.Drawing.Point(4, 22);
+            this.tabPage1.Name = "tabPage1";
+            this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPage1.Size = new System.Drawing.Size(346, 235);
+            this.tabPage1.TabIndex = 0;
+            this.tabPage1.Text = "Advanced";
+            this.tabPage1.UseVisualStyleBackColor = true;
+            // 
+            // tabPage2
+            // 
+            this.tabPage2.Controls.Add(this.panel1);
+            this.tabPage2.Controls.Add(this.multiple_progressBar);
+            this.tabPage2.Location = new System.Drawing.Point(4, 22);
+            this.tabPage2.Name = "tabPage2";
+            this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPage2.Size = new System.Drawing.Size(346, 235);
+            this.tabPage2.TabIndex = 1;
+            this.tabPage2.Text = "Simple";
+            this.tabPage2.UseVisualStyleBackColor = true;
+            // 
+            // multiple_progressBar
+            // 
+            this.multiple_progressBar.Location = new System.Drawing.Point(6, 141);
+            this.multiple_progressBar.Name = "multiple_progressBar";
+            this.multiple_progressBar.Size = new System.Drawing.Size(334, 23);
+            this.multiple_progressBar.TabIndex = 0;
+            // 
+            // panel1
+            // 
+            this.panel1.Controls.Add(this.label_log_username);
+            this.panel1.Controls.Add(this.label_log_filename);
+            this.panel1.Location = new System.Drawing.Point(6, 110);
+            this.panel1.Name = "panel1";
+            this.panel1.Size = new System.Drawing.Size(334, 25);
+            this.panel1.TabIndex = 3;
+            // 
+            // label_log_filename
+            // 
+            this.label_log_filename.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.label_log_filename.Font = new System.Drawing.Font("Segoe UI", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label_log_filename.Location = new System.Drawing.Point(0, 12);
+            this.label_log_filename.Name = "label_log_filename";
+            this.label_log_filename.RightToLeft = System.Windows.Forms.RightToLeft.No;
+            this.label_log_filename.Size = new System.Drawing.Size(334, 13);
+            this.label_log_filename.TabIndex = 10;
+            this.label_log_filename.Text = "...";
+            this.label_log_filename.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // label_log_username
+            // 
+            this.label_log_username.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.label_log_username.Font = new System.Drawing.Font("Segoe UI", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label_log_username.Location = new System.Drawing.Point(0, -1);
+            this.label_log_username.Name = "label_log_username";
+            this.label_log_username.RightToLeft = System.Windows.Forms.RightToLeft.No;
+            this.label_log_username.Size = new System.Drawing.Size(334, 13);
+            this.label_log_username.TabIndex = 11;
+            this.label_log_username.Text = "...";
+            this.label_log_username.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // Form1
             // 
@@ -320,7 +503,7 @@
             this.MaximizeBox = false;
             this.Name = "Form1";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
-            this.Text = "Ushanka  - Alpha";
+            this.Text = "Ushanka  - Alpha 1.1";
             this.Load += new System.EventHandler(this.Form1_Load);
             this.tabControl1.ResumeLayout(false);
             this.singlePage.ResumeLayout(false);
@@ -330,6 +513,11 @@
             this.multiplePage.PerformLayout();
             this.settingsPage.ResumeLayout(false);
             this.settingsPage.PerformLayout();
+            this.tabControl2.ResumeLayout(false);
+            this.tabPage1.ResumeLayout(false);
+            this.tabPage1.PerformLayout();
+            this.tabPage2.ResumeLayout(false);
+            this.panel1.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -350,17 +538,31 @@
         private System.Windows.Forms.Button single_saveAllButton;
         private System.Windows.Forms.ToolTip toolTip1;
         private System.Windows.Forms.Label single_randomText;
-        private System.Windows.Forms.Button button1;
-        private System.Windows.Forms.Button button2;
-        private System.Windows.Forms.TextBox textBox1;
+        private System.Windows.Forms.Button multiple_goButton;
+        private System.Windows.Forms.Button button_downloadLocation;
+        private System.Windows.Forms.TextBox settings_downloadTextBox;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Label label4;
-        private System.Windows.Forms.RichTextBox richTextBox2;
-        private System.Windows.Forms.Label label3;
-        private System.Windows.Forms.RichTextBox richTextBox1;
-        private System.Windows.Forms.Button button3;
-        private System.Windows.Forms.TextBox textBox2;
+        private System.Windows.Forms.RichTextBox multiple_logBox;
+        private System.Windows.Forms.Button button_logLocation;
+        private System.Windows.Forms.TextBox settings_logTextBox;
         private System.Windows.Forms.Label label5;
+        private System.Windows.Forms.Label helpLog;
+        private System.Windows.Forms.Button settings_buttonSave;
+        private System.Windows.Forms.Label helpUsernames;
+        private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.RichTextBox multiple_usernameBox;
+        private System.Windows.Forms.Label goHelp;
+        private System.Windows.Forms.Label label8;
+        private System.Windows.Forms.Label label7;
+        private System.Windows.Forms.Label label6;
+        private System.Windows.Forms.TabControl tabControl2;
+        private System.Windows.Forms.TabPage tabPage1;
+        private System.Windows.Forms.TabPage tabPage2;
+        private System.Windows.Forms.ProgressBar multiple_progressBar;
+        private System.Windows.Forms.Panel panel1;
+        private System.Windows.Forms.Label label_log_username;
+        private System.Windows.Forms.Label label_log_filename;
     }
 }
 
