@@ -34,6 +34,7 @@ namespace Ushanka
 
         public List<string> Usernames { get; set; } = new List<string>();
 
-        public bool SpecialMode { get; set; } = false;
+        public bool SpecialMode { get; set; } = false; // Made for my friend.
+        public bool DebugMode { get; set; } = false;
     }
 }

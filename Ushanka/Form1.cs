@@ -18,9 +18,12 @@ namespace Ushanka
     // Production began on 26.02.2019
     // Made for Snowjix
 
+    // Eternal todo: Clean up code.
+
     public partial class Form1 : Form
     {
         public WebClient webClient;
+        public Log log;
 
         public readonly string SettingsFile = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Settings.json");
 
@@ -34,15 +37,95 @@ namespace Ushanka
                 {
                     Settings.Load(SettingsFile);
                 }
+
+                Settings.Save(SettingsFile); // Creates a new settings file and populates already existing files with new properties.
             }
-            catch
+            catch (Exception ex)
             {
-                // Catch error here
+                log.WriteLine(ex.ToString());
             }
             
-
             webClient = new WebClient();
         }
+
+        private void Form1_Load(object sender, EventArgs e)
+        {
+            log = new Log();
+
+            if (Settings.LoadedSettings.DebugMode)
+            {
+                if (logBox == null) return; // Just in case.
+
+                log.LogOutput += delegate (object s, LogOutputEventArgs lo)
+                {
+                    tabControl1.Invoke(new Action(() =>
+                    {
+                        Color _color;
+
+                        switch (lo.LogType)
+                        {
+                            default:
+                            case LogType.Info: _color = Color.Black; break;
+                            case LogType.Warning: _color = Color.Goldenrod; break;
+                            case LogType.Error: _color = Color.DarkRed; break;
+                        }
+
+                        logBox.SelectionColor = _color;
+                        logBox.AppendText(lo.Text + "\n");
+                    }));
+                };
+            }
+            else
+            {
+                tabControl1.TabPages.RemoveAt(3);
+            }
+
+            CheckForIllegalCrossThreadCalls = false;
+
+            settings_downloadTextBox.Text = Settings.LoadedSettings.DownloadLocation;
+            settings_logTextBox.Text = Settings.LoadedSettings.LogLocation;
+
+            multiple_usernameBox.Text = String.Join(Environment.NewLine, Settings.LoadedSettings.Usernames);
+
+            Random rdm = new Random();
+
+            List<string> _titles = new List<string>();
+
+            _titles.AddRange(new string[]
+            {
+                "Now with more Vitamin C",
+                "Subscribe to PewDiePie",
+                "Approved by Snowjix",
+                "🎵 Hit or Miss 🎵",
+                "1v1 me on rust",
+                "C# > Java",
+                "Now slightly less radioactive",
+                "Sponsored by North Korea",
+                "Removed Herobrine",
+                "500% More User Friendly Than The Alternative",
+                "May conntain speling erorrs!",
+                //"⬆️⬆️⬇️⬇️⬅️➡️⬅️➡️🅱️🅰️"
+                "Up Up Down Down Left Right Left Right B A Start",
+                "EST 2019",
+                "May contain easter eggs!",
+                "Also check out my christian Minecraft server!",
+                "Instagram please don't nerf plz",
+                "Thank you fow using my pwogwam senpai OwO",
+                "Stop! You have violated the law!",
+                "*Pulls Out Meat Scepter*",
+                "200 Proof"
+            });
+
+            //if (Settings.LoadedSettings.SpecialMode)
+            //    _titles.AddRange(new string[]
+            //        {
+            //            "",
+            //        });
+
+            single_randomText.Text = _titles[rdm.Next(0, _titles.Count)];
+        }
+
+        #region Single
 
         private Media media;
         private int Index = 0;
@@ -126,7 +209,7 @@ namespace Ushanka
             string url = media.URL[Index];
             string fileName = Path.GetFileName(new Uri(url).LocalPath);
 
-            switch (Path.GetExtension(fileName))
+            switch (Path.GetExtension(fileName)) // There might be a better way to do this, but this works for now.
             {
                 case ".jpg": sfd.Filter = "JPEG File (*.jpg)|*.jpg"; break;
                 case ".mp4": sfd.Filter = "MP4 File (*.mp4)|*.mp4"; break;
@@ -160,47 +243,9 @@ namespace Ushanka
             }
         }
 
-        private void Form1_Load(object sender, EventArgs e)
-        {
-            CheckForIllegalCrossThreadCalls = false;
+        #endregion
 
-            settings_downloadTextBox.Text = Settings.LoadedSettings.DownloadLocation;
-            settings_logTextBox.Text = Settings.LoadedSettings.LogLocation;
-
-            multiple_usernameBox.Text = String.Join(Environment.NewLine, Settings.LoadedSettings.Usernames);
-
-            Random rdm = new Random();
-
-            List<string> _titles = new List<string>();
-
-            _titles.AddRange(new string[] 
-            {
-                "Now with more Vitamin C",
-                "Subscribe to PewDiePie",
-                "Approved by Snowjix",
-                "🎵 Hit or Miss 🎵",
-                "1v1 me on rust",
-                "C# > Java",
-                "Now slightly less radioactive",
-                "Sponsored by North Korea",
-                "Removed Herobrine",
-                "500% More User Friendly Than The Alternative",
-                "May conntain speling erorrs!",
-                //"⬆️⬆️⬇️⬇️⬅️➡️⬅️➡️🅱️🅰️"
-                "Up Up Down Down Left Right Left Right B A Start",
-                "EST 2019",
-                "May contain easter eggs!",
-                "Also check out my christian Minecraft server!"
-            });
-
-            //if (Settings.LoadedSettings.SpecialMode)
-            //    _titles.AddRange(new string[]
-            //        {
-            //            "",
-            //        });
-
-            single_randomText.Text = _titles[rdm.Next(0, _titles.Count)];
-        }
+        #region Settings
 
         private void button_save_Click(object sender, EventArgs e)
         {
@@ -210,10 +255,10 @@ namespace Ushanka
 
                 MessageBox.Show("Settings Saved!", "TADA!", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
-            catch
+            catch (Exception ex)
             {
                 MessageBox.Show("Unhandled Error!", "OH NOES!", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                // Catch error plz
+                log.WriteLine("Unhandled error: " + ex.Message, LogType.Error);
             }          
         }
 
@@ -237,63 +282,79 @@ namespace Ushanka
             }
         }
 
-        private bool IsBusy = false;
+        #endregion
 
-        private void multiple_goButton_Click(object sender, EventArgs e)
+        #region Multiple
+
+        private async void multiple_goButton_Click(object sender, EventArgs e)
         {
-            if (IsBusy) return;
+            Save(); // Save the new settings, if this function fails we'll get problem.
 
-            Save(); // Save the new settings, if this function fails we'll get program.
-
-            // I don't really like to use threads, but they just work the best.
-            // And for some reason after this function runs the logbox just cease to exist. (Sometimes, it's weird.)
-
-            new Thread(() => 
+            await Task.Run(() => 
             {
-                IsBusy = true; // bad solution, but hey it works.
+                multiple_goButton.Enabled = false;
 
-                foreach(string _user in Settings.LoadedSettings.Usernames)
+                foreach (string _user in Settings.LoadedSettings.Usernames)
                 {
                     User user = Instagram.GetUser(_user);
 
-                    label_log_username.Text = user.Username;
-
                     if (user != null)
                     {
+                        label_log_username.Text = user.Username;
+
                         string userDownloadFolder = Directory.CreateDirectory(Path.Combine(Settings.LoadedSettings.DownloadLocation, _user)).FullName;
 
-                        List<Media> _media = user.Media;
-
-                        multiple_progressBar.Maximum = _media.Count - 1;
-
-                        for (int i = 0; i < _media.Count; i++)
+                        if (!user.IsPrivate && user.Media.Count > 0)
                         {
-                            multiple_progressBar.Value = i;
+                            List<Media> _media = user.Media;
 
-                            Media media = _media[i];
+                            multiple_progressBar.Maximum = _media.Count - 1;
 
-                            foreach (string url in media.URL)
-                            {      
-                                string fileName = Path.GetFileName(new Uri(url).LocalPath);
+                            for (int i = 0; i < _media.Count; i++)
+                            {
+                                multiple_progressBar.Invoke(new Action(() => { multiple_progressBar.Value = i; }));
+                                
+                                Media media = _media[i];
 
-                                label_log_filename.Text = fileName;
-                                Echo(string.Format("Downloading: '{0}'", fileName), _user);
+                                foreach (string url in media.URL)
+                                {
+                                    string fileName = Path.GetFileName(new Uri(url).LocalPath);
 
-                                webClient.DownloadFile(url, Path.Combine( userDownloadFolder, fileName));
+                                    label_log_filename.Text = fileName;
+
+                                    Echo(string.Format("Downloading: '{0}'", fileName), _user);
+                                    log.WriteLine(string.Format("<{0}> Downloading: '{1}'", _user, fileName));
+
+                                    string fileToBe = Path.Combine(userDownloadFolder, fileName);
+
+                                    if (!File.Exists(fileToBe))
+                                        webClient.DownloadFile(url, fileToBe);
+                                }
                             }
+                        }
+                        else
+                        {
+                            Echo("Username is invalid! Ignoring!", _user);
+                            log.WriteLine(string.Format("User '{0}' is private or has no content!", _user), LogType.Warning);
                         }
                     }
                     else
                     {
-                        Echo("Username is invalid! Ignoring!", _user);
+                        log.WriteLine(string.Format("Username '{0} is invalid! Ignoring!'", _user), LogType.Warning);
+
                     }
                 }
 
-                IsBusy = false;
-                MessageBox.Show("Finished Downloading!", "WOHO!", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                multiple_goButton.Enabled = true;
 
-            }).Start();
+                MessageBox.Show("Finished Downloading!", "WOHO!", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            });
+
+            // I don't really like to use threads, but they just work the best.
+            // And for some reason after this function runs the logbox just cease to exist. (Sometimes, it's weird.)
         }
+
+        #endregion
 
         public void Save()
         {
@@ -307,7 +368,18 @@ namespace Ushanka
 
         private void Echo(string Text, string Username)
         {
-            multiple_logBox.AppendText(string.Format("[{0}][{1}] {2}", DateTime.Now.ToString(), Username, Text) + "\n");
+            if (!multiple_logBox.IsDisposed)
+            {
+                tabControl2.Invoke(new Action(() => 
+                {
+                    multiple_logBox.AppendText(string.Format("[{0}][{1}] {2}", DateTime.Now.ToString(), Username, Text) + "\n");
+                }));
+            }       
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            new aboutForm().ShowDialog();
         }
     }
 }

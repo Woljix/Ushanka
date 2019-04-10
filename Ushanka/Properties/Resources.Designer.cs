@@ -73,9 +73,29 @@ namespace Ushanka.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap mario {
+            get {
+                object obj = ResourceManager.GetObject("mario", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap pug_placeholder {
             get {
                 object obj = ResourceManager.GetObject("pug_placeholder", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap ushanka_hat {
+            get {
+                object obj = ResourceManager.GetObject("ushanka_hat", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
