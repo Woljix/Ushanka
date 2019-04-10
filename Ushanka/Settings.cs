@@ -29,8 +29,8 @@ namespace Ushanka
                 LoadedSettings = _settings;
         }
 
-        public string DownloadLocation { get; set; } = System.IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Downloads");
-        public string LogLocation { get; set; } = System.IO.Path.Combine( AppDomain.CurrentDomain.BaseDirectory, "Logs");
+        public string DownloadLocation { get; set; } = "Downloads";
+        public string LogLocation { get; set; } = "Logs"; // Not implemented yet
 
         public List<string> Usernames { get; set; } = new List<string>();
 
