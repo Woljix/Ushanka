@@ -31,7 +31,7 @@ namespace Ushanka
         {
             clickAmount++;
 
-            if (clickAmount > 15)
+            if (clickAmount > 7)
             {
                 clickAmount = 0;
 
@@ -43,23 +43,24 @@ namespace Ushanka
 
         private void aboutForm_KeyUp(object sender, KeyEventArgs e)
         {
-            if (konami.IsCompletedBy(e.KeyCode))
+            Invoke(new Action(() => 
             {
-                try
+                if (konami.IsCompletedBy(e.KeyCode))
                 {
-                    InitiateMario();
-                }
-                catch
-                {
-                    MessageBox.Show("Something cool was supposed to happen right now.\nI guess i fucked something up.\nSorry About That!");
-                }
+                    try
+                    {
+                        Random rdm = new Random();
 
-            }
-        }
+                        InitiateEasterEgg(rdm.Next(0, 2));
 
-        private void button1_Click(object sender, EventArgs e)
-        {
-            InitiateMario();
+                    }
+                    catch
+                    {
+                        MessageBox.Show("Something cool was supposed to happen right now.\nI guess i fucked something up.\nSorry About That!");
+                    }
+
+                }
+            }));            
         }
 
         #region Easter egg?s
@@ -68,7 +69,7 @@ namespace Ushanka
         private PictureBox pb;
         private Timer timer;
 
-        public void InitiateMario()
+        public void InitiateEasterEgg(int sel)
         {
             if (MarioRunning) return;
 
@@ -77,10 +78,7 @@ namespace Ushanka
             if (pb == null)
             {
                 pb = new PictureBox();
-
-                pb.Image = Properties.Resources.mario;
                 pb.SizeMode = PictureBoxSizeMode.Zoom;
-                pb.Size = new Size(48, 48);
 
                 pb.Click += delegate
                 {
@@ -90,23 +88,39 @@ namespace Ushanka
                 panel1.Controls.Add(pb);
             }
 
+            int speed = 0;
+
+            switch (sel)
+            {
+                case 0: // Mario
+                    pb.Image = Properties.Resources.mario;
+                    pb.Size = new Size(48, 48);
+
+                    speed = 1;
+                    break;
+
+                case 1: // Sonoc
+                    pb.Image = Properties.Resources.sonic;
+                    pb.Size = new Size(58, 58);
+
+                    speed = 3;
+                    break;
+            }
+
             pb.Location = new Point(-50, 203); // Go to slightly offscreen
 
-            if (timer == null)
+            timer = new Timer();
+            timer.Interval = 16;
+            timer.Tick += delegate
             {
-                timer = new Timer();
-                timer.Interval = 16;
-                timer.Tick += delegate
-                {
-                    pb.Location = new Point(pb.Location.X + 1, pb.Location.Y);
+                pb.Location = new Point(pb.Location.X + speed, pb.Location.Y);
 
-                    if (pb.Location.X > 450)
-                    {
-                        timer.Stop();
-                        MarioRunning = false;
-                    }
-                };
-            }
+                if (pb.Location.X > 450)
+                {
+                    timer.Stop();
+                    MarioRunning = false;
+                }
+            };
 
             timer.Start();
         }

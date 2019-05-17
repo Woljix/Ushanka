@@ -23,8 +23,6 @@ namespace Ushanka
     public partial class Form1 : Form
     {
         public WebClient webClient;
-        public Log log;
-
         public readonly string SettingsFile = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Settings.json");
 
         public Form1()
@@ -42,7 +40,7 @@ namespace Ushanka
             }
             catch (Exception ex)
             {
-                log.WriteLine(ex.ToString());
+                Log.WriteLine(ex.ToString());
             }
             
             webClient = new WebClient();
@@ -50,13 +48,11 @@ namespace Ushanka
 
         private void Form1_Load(object sender, EventArgs e)
         {
-            log = new Log();
-
-            if (Settings.LoadedSettings.DebugMode)
+            if (Settings.Loaded.DebugMode)
             {
                 if (logBox == null) return; // Just in case.
 
-                log.LogOutput += delegate (object s, LogOutputEventArgs lo)
+                Log.LogOutput += delegate (object s, LogOutputEventArgs lo)
                 {
                     tabControl1.Invoke(new Action(() =>
                     {
@@ -82,10 +78,10 @@ namespace Ushanka
 
             CheckForIllegalCrossThreadCalls = false;
 
-            settings_downloadTextBox.Text = Settings.LoadedSettings.DownloadLocation;
-            settings_logTextBox.Text = Settings.LoadedSettings.LogLocation;
+            settings_downloadTextBox.Text = Settings.Loaded.DownloadLocation;
+            settings_logTextBox.Text = Settings.Loaded.LogLocation;
 
-            multiple_usernameBox.Text = String.Join(Environment.NewLine, Settings.LoadedSettings.Usernames);
+            multiple_usernameBox.Text = string.Join(Environment.NewLine, Settings.Loaded.Usernames);
 
             Random rdm = new Random();
 
@@ -104,7 +100,7 @@ namespace Ushanka
                 "Removed Herobrine",
                 "500% More User Friendly Than The Alternative",
                 "May conntain speling erorrs!",
-                //"⬆️⬆️⬇️⬇️⬅️➡️⬅️➡️🅱️🅰️"
+                //"⬆️⬆️⬇️⬇️⬅️➡️⬅️➡️🅱️🅰️",
                 "Up Up Down Down Left Right Left Right B A Start",
                 "EST 2019",
                 "May contain easter eggs!",
@@ -113,14 +109,9 @@ namespace Ushanka
                 "Thank you fow using my pwogwam senpai OwO",
                 "Stop! You have violated the law!",
                 "*Pulls Out Meat Scepter*",
-                "200 Proof"
+                "200 Proof",
+                "The hat is hiding something. Maybe you should punch it!"
             });
-
-            //if (Settings.LoadedSettings.SpecialMode)
-            //    _titles.AddRange(new string[]
-            //        {
-            //            "",
-            //        });
 
             single_randomText.Text = _titles[rdm.Next(0, _titles.Count)];
         }
@@ -132,26 +123,43 @@ namespace Ushanka
 
         private void single_loadButton_Click(object sender, EventArgs e)
         {
-            Index = 0;
-            single_prevButton.Enabled = false;
-            single_nextButton.Enabled = false;
-            single_saveAllButton.Enabled = false;
-            single_saveButton.Enabled = false;
-            single_pictureBox.ImageLocation = string.Empty;
-
-            media = Instagram.GetMedia(single_textBox.Text);
-
-            if (media != null)
+            Invoke(new Action(() => 
             {
-                ChangeIndex(Direction.Stay);
-                single_saveButton.Enabled = true;
+                Log.WriteLine("Single load button pressed!");
 
-                single_saveAllButton.Enabled = (media.URL.Count > 1);
-            }
-            else
-            {
-                MessageBox.Show("Media ID was invalid or some other error happened!\nPro Tip: IDs should look like this: 'BuWp_d3F9Ab'", "Oh damn", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
+                string med_id = single_textBox.Text; // Should be 11 characters long
+
+                if (media?.Shortcode != med_id)
+                {
+                    Index = 0;
+                    single_prevButton.Enabled = false;
+                    single_nextButton.Enabled = false;
+                    single_saveAllButton.Enabled = false;
+                    single_saveButton.Enabled = false;
+                    single_pictureBox.ImageLocation = string.Empty;
+
+                    if (med_id.Length == 11)
+                    {
+                        media = Instagram.GetMedia(med_id);
+
+                        if (media != null)
+                        {
+                            ChangeIndex(Direction.Stay);
+                            single_saveButton.Enabled = true;
+
+                            single_saveAllButton.Enabled = (media.URL.Count > 1);
+                        }
+                        else
+                        {
+                            MessageBox.Show("Media ID was invalid or some other error happened!\nPro Tip: IDs should look like this: 'BuWp_d3F9Ab'", "Oh damn", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                        }
+                    }
+                    else
+                    {
+                        MessageBox.Show("Media ID should be 11 characters long!", "Oh oh", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    }
+                }
+            }));   
         }
 
         private void ChangeIndex(Direction direction)
@@ -178,7 +186,7 @@ namespace Ushanka
 
                 if (ext == ".mp4")
                 {
-                    if (!Settings.LoadedSettings.SpecialMode)
+                    if (!Settings.Loaded.SpecialMode)
                         single_pictureBox.Image = Properties.Resources.pug_placeholder;
                     else
                         single_pictureBox.Image = Properties.Resources.daisy_placeholder;
@@ -258,7 +266,7 @@ namespace Ushanka
             catch (Exception ex)
             {
                 MessageBox.Show("Unhandled Error!", "OH NOES!", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                log.WriteLine("Unhandled error: " + ex.Message, LogType.Error);
+                Log.WriteLine("Unhandled error: " + ex.Message, LogType.Error);
             }          
         }
 
@@ -282,6 +290,11 @@ namespace Ushanka
             }
         }
 
+        private void button1_Click(object sender, EventArgs e)
+        {
+            new aboutForm().ShowDialog();
+        }
+
         #endregion
 
         #region Multiple
@@ -294,7 +307,7 @@ namespace Ushanka
             {
                 multiple_goButton.Enabled = false;
 
-                foreach (string _user in Settings.LoadedSettings.Usernames)
+                foreach (string _user in Settings.Loaded.Usernames)
                 {
                     User user = Instagram.GetUser(_user);
 
@@ -302,7 +315,7 @@ namespace Ushanka
                     {
                         label_log_username.Text = user.Username;
 
-                        string userDownloadFolder = Directory.CreateDirectory(Path.Combine(Settings.LoadedSettings.DownloadLocation, _user)).FullName;
+                        string userDownloadFolder = Directory.CreateDirectory(Path.Combine(Settings.Loaded.DownloadLocation, _user)).FullName;
 
                         if (!user.IsPrivate && user.Media.Count > 0)
                         {
@@ -312,35 +325,38 @@ namespace Ushanka
 
                             for (int i = 0; i < _media.Count; i++)
                             {
-                                multiple_progressBar.Invoke(new Action(() => { multiple_progressBar.Value = i; }));
-                                
-                                Media media = _media[i];
-
-                                foreach (string url in media.URL)
+                                tabControl2.Invoke(new Action(() => 
                                 {
-                                    string fileName = Path.GetFileName(new Uri(url).LocalPath);
+                                    multiple_progressBar.Value = i;
 
-                                    label_log_filename.Text = fileName;
+                                    Media media = _media[i];
 
-                                    Echo(string.Format("Downloading: '{0}'", fileName), _user);
-                                    log.WriteLine(string.Format("<{0}> Downloading: '{1}'", _user, fileName));
+                                    foreach (string url in media.URL)
+                                    {
+                                        string fileName = Path.GetFileName(new Uri(url).LocalPath);
 
-                                    string fileToBe = Path.Combine(userDownloadFolder, fileName);
+                                        label_log_filename.Text = fileName;
 
-                                    if (!File.Exists(fileToBe))
-                                        webClient.DownloadFile(url, fileToBe);
-                                }
+                                        Echo(string.Format("Downloading: '{0}'", fileName), _user);
+                                        Log.WriteLine(string.Format("<{0}> Downloading: '{1}'", _user, fileName));
+
+                                        string fileToBe = Path.Combine(userDownloadFolder, fileName);
+
+                                        if (!File.Exists(fileToBe))
+                                            webClient.DownloadFile(url, fileToBe);
+                                    }
+                                }));
                             }
                         }
                         else
                         {
                             Echo("Username is invalid! Ignoring!", _user);
-                            log.WriteLine(string.Format("User '{0}' is private or has no content!", _user), LogType.Warning);
+                            Log.WriteLine(string.Format("User '{0}' is private or has no content!", _user), LogType.Warning);
                         }
                     }
                     else
                     {
-                        log.WriteLine(string.Format("Username '{0} is invalid! Ignoring!'", _user), LogType.Warning);
+                        Log.WriteLine(string.Format("Username '{0} is invalid! Ignoring!'", _user), LogType.Warning);
 
                     }
                 }
@@ -349,21 +365,20 @@ namespace Ushanka
 
                 MessageBox.Show("Finished Downloading!", "WOHO!", MessageBoxButtons.OK, MessageBoxIcon.Information);
             });
-
-            // I don't really like to use threads, but they just work the best.
-            // And for some reason after this function runs the logbox just cease to exist. (Sometimes, it's weird.)
         }
 
         #endregion
 
         public void Save()
         {
-            Settings.LoadedSettings.DownloadLocation = settings_downloadTextBox.Text;
-            Settings.LoadedSettings.LogLocation = settings_logTextBox.Text;
+            Settings.Loaded.DownloadLocation = settings_downloadTextBox.Text;
+            Settings.Loaded.LogLocation = settings_logTextBox.Text;
 
-            Settings.LoadedSettings.Usernames = multiple_usernameBox.Text.Split(new[] { "\n" }, StringSplitOptions.RemoveEmptyEntries).ToList();
+            Settings.Loaded.Usernames = multiple_usernameBox.Text.Split(new[] { "\n" }, StringSplitOptions.RemoveEmptyEntries).ToList();
 
             Settings.Save(SettingsFile);
+
+            Log.WriteLine("Settings Saved!");
         }
 
         private void Echo(string Text, string Username)
@@ -377,9 +392,76 @@ namespace Ushanka
             }       
         }
 
-        private void button1_Click(object sender, EventArgs e)
+        private string currentPP = string.Empty;
+
+        private void Pp_loadButton_Click(object sender, EventArgs e)
         {
-            new aboutForm().ShowDialog();
+            string _url = string.Empty;
+
+            this.Invoke(new Action(() =>
+            {
+                pp_save.Enabled = false;
+                currentPP = string.Empty;
+                pp_pictureBox.ImageLocation = string.Empty;
+
+                try
+                {
+                    _url = Instagram.GetUser(pp_tb_username.Text).ProfilePicture;
+                }
+                catch
+                {
+                    _url = string.Empty; // Kinda redundant, i know :)
+                }
+
+                if (!string.IsNullOrEmpty(_url))
+                {
+                    currentPP = _url;
+
+                    pp_pictureBox.ImageLocation = currentPP;
+                    pp_save.Enabled = true;
+                }
+                else
+                {
+                    MessageBox.Show("Could not load their profile picture for some reason!", "Sorry about that!", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                }
+            }));           
         }
+
+        private void Pp_save_Click(object sender, EventArgs e)
+        {
+            SaveFileDialog sfd = new SaveFileDialog();
+
+            string url = currentPP;
+            string fileName = Path.GetFileName(new Uri(url).LocalPath);
+
+            sfd.Filter = "JPEG File (*.jpg)|*.jpg";
+            sfd.FileName = fileName;
+
+            if (sfd.ShowDialog() == DialogResult.OK)
+            {
+                webClient.DownloadFile(url, sfd.FileName);
+            }
+        }
+
+        private void Single_textBox_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Enter)
+            {               
+                single_loadButton.PerformClick();
+                e.SuppressKeyPress = true;
+                e.Handled = true;
+            }             
+        }
+
+        private void Pp_tb_username_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Enter)
+            {
+                pp_loadButton.PerformClick();
+                e.SuppressKeyPress = true;
+                e.Handled = true;
+            }
+        }
+
     }
 }

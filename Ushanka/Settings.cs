@@ -10,11 +10,11 @@ namespace Ushanka
 {
     public class Settings
     {
-        public static Settings LoadedSettings { get; internal set; } = new Settings();
+        public static Settings Loaded { get; internal set; } = new Settings();
 
         public static void Save(string Filename)
         {
-            string json = JsonConvert.SerializeObject(LoadedSettings, Formatting.Indented);
+            string json = JsonConvert.SerializeObject(Loaded, Formatting.Indented);
 
             File.WriteAllText(Filename, json);
         }
@@ -26,7 +26,7 @@ namespace Ushanka
             _settings = JsonConvert.DeserializeObject<Settings>(File.ReadAllText(Filename));
 
             if (_settings != null)
-                LoadedSettings = _settings;
+                Loaded = _settings;
         }
 
         public string DownloadLocation { get; set; } = "Downloads";

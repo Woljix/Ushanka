@@ -10,16 +10,17 @@ namespace Ushanka
     {
         public Log() { }
 
-        public void WriteLine(string Text) => WriteLine(Text, LogType.Info);
+        public static void WriteLine(string Text) => WriteLine(Text, LogType.Info);
 
-        public void WriteLine(string Text, LogType logType)
+        public static void WriteLine(string Text, LogType logType)
         {
             if (LogOutput != null)
             {
                 LogOutputEventArgs args = new LogOutputEventArgs();
                 args.Text = Text;
                 args.LogType = logType;
-                OnLogOuput(args);
+                //OnLogOuput(args);
+                LogOutput?.Invoke(null, args);
             }
             else
             {
@@ -27,12 +28,12 @@ namespace Ushanka
             }
         }
 
-        protected virtual void OnLogOuput(LogOutputEventArgs e)
-        {
-            LogOutput?.Invoke(this, e);
-        }
+        //protected virtual void OnLogOuput(LogOutputEventArgs e)
+        //{
+        //    LogOutput?.Invoke(this, e);
+        //}
 
-        public event EventHandler<LogOutputEventArgs> LogOutput;
+        public static event EventHandler<LogOutputEventArgs> LogOutput;
     }
 
     public class LogOutputEventArgs : EventArgs

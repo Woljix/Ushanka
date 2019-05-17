@@ -72,6 +72,12 @@
             this.logPage = new System.Windows.Forms.TabPage();
             this.logBox = new System.Windows.Forms.RichTextBox();
             this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
+            this.profilePicturePage = new System.Windows.Forms.TabPage();
+            this.pp_save = new System.Windows.Forms.Button();
+            this.label9 = new System.Windows.Forms.Label();
+            this.pp_loadButton = new System.Windows.Forms.Button();
+            this.pp_tb_username = new System.Windows.Forms.TextBox();
+            this.pp_pictureBox = new System.Windows.Forms.PictureBox();
             this.tabControl1.SuspendLayout();
             this.singlePage.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.single_pictureBox)).BeginInit();
@@ -82,12 +88,15 @@
             this.tabPage1.SuspendLayout();
             this.settingsPage.SuspendLayout();
             this.logPage.SuspendLayout();
+            this.profilePicturePage.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pp_pictureBox)).BeginInit();
             this.SuspendLayout();
             // 
             // tabControl1
             // 
             this.tabControl1.Controls.Add(this.singlePage);
             this.tabControl1.Controls.Add(this.multiplePage);
+            this.tabControl1.Controls.Add(this.profilePicturePage);
             this.tabControl1.Controls.Add(this.settingsPage);
             this.tabControl1.Controls.Add(this.logPage);
             this.tabControl1.Dock = System.Windows.Forms.DockStyle.Fill;
@@ -198,9 +207,12 @@
             this.single_textBox.Size = new System.Drawing.Size(240, 20);
             this.single_textBox.TabIndex = 1;
             this.single_textBox.Text = "Bttnh-EBv89";
+            this.single_textBox.KeyDown += new System.Windows.Forms.KeyEventHandler(this.Single_textBox_KeyDown);
             // 
             // single_pictureBox
             // 
+            this.single_pictureBox.ErrorImage = global::Ushanka.Properties.Resources.error;
+            this.single_pictureBox.InitialImage = global::Ushanka.Properties.Resources.loading;
             this.single_pictureBox.Location = new System.Drawing.Point(61, 63);
             this.single_pictureBox.Name = "single_pictureBox";
             this.single_pictureBox.Size = new System.Drawing.Size(250, 250);
@@ -417,7 +429,7 @@
             // 
             // button1
             // 
-            this.button1.Location = new System.Drawing.Point(8, 399);
+            this.button1.Location = new System.Drawing.Point(124, 399);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(131, 23);
             this.button1.TabIndex = 10;
@@ -446,7 +458,8 @@
             this.label7.Size = new System.Drawing.Size(15, 16);
             this.label7.TabIndex = 8;
             this.label7.Text = "?";
-            this.toolTip1.SetToolTip(this.label7, "The folder location that you want the program to write the logs to.\r\n");
+            this.toolTip1.SetToolTip(this.label7, "The folder location that you want the program to write the logs to.\r\n\r\n[Not imple" +
+        "mented yet]");
             // 
             // label6
             // 
@@ -543,6 +556,71 @@
             this.logBox.Text = "";
             this.logBox.WordWrap = false;
             // 
+            // profilePicturePage
+            // 
+            this.profilePicturePage.Controls.Add(this.pp_save);
+            this.profilePicturePage.Controls.Add(this.label9);
+            this.profilePicturePage.Controls.Add(this.pp_loadButton);
+            this.profilePicturePage.Controls.Add(this.pp_tb_username);
+            this.profilePicturePage.Controls.Add(this.pp_pictureBox);
+            this.profilePicturePage.Location = new System.Drawing.Point(4, 22);
+            this.profilePicturePage.Name = "profilePicturePage";
+            this.profilePicturePage.Padding = new System.Windows.Forms.Padding(3);
+            this.profilePicturePage.Size = new System.Drawing.Size(376, 459);
+            this.profilePicturePage.TabIndex = 4;
+            this.profilePicturePage.Text = "Profile Picture";
+            this.profilePicturePage.UseVisualStyleBackColor = true;
+            // 
+            // pp_save
+            // 
+            this.pp_save.Enabled = false;
+            this.pp_save.Location = new System.Drawing.Point(61, 370);
+            this.pp_save.Name = "pp_save";
+            this.pp_save.Size = new System.Drawing.Size(250, 23);
+            this.pp_save.TabIndex = 13;
+            this.pp_save.Text = "Save!";
+            this.pp_save.UseVisualStyleBackColor = true;
+            this.pp_save.Click += new System.EventHandler(this.Pp_save_Click);
+            // 
+            // label9
+            // 
+            this.label9.AutoSize = true;
+            this.label9.Location = new System.Drawing.Point(6, 27);
+            this.label9.Name = "label9";
+            this.label9.Size = new System.Drawing.Size(61, 13);
+            this.label9.TabIndex = 10;
+            this.label9.Text = "Username: ";
+            // 
+            // pp_loadButton
+            // 
+            this.pp_loadButton.Location = new System.Drawing.Point(293, 22);
+            this.pp_loadButton.Name = "pp_loadButton";
+            this.pp_loadButton.Size = new System.Drawing.Size(75, 23);
+            this.pp_loadButton.TabIndex = 9;
+            this.pp_loadButton.Text = "Load";
+            this.pp_loadButton.UseVisualStyleBackColor = true;
+            this.pp_loadButton.Click += new System.EventHandler(this.Pp_loadButton_Click);
+            // 
+            // pp_tb_username
+            // 
+            this.pp_tb_username.Location = new System.Drawing.Point(73, 24);
+            this.pp_tb_username.Name = "pp_tb_username";
+            this.pp_tb_username.Size = new System.Drawing.Size(214, 20);
+            this.pp_tb_username.TabIndex = 8;
+            this.pp_tb_username.Text = "belle.delphine";
+            this.pp_tb_username.KeyDown += new System.Windows.Forms.KeyEventHandler(this.Pp_tb_username_KeyDown);
+            // 
+            // pp_pictureBox
+            // 
+            this.pp_pictureBox.ErrorImage = global::Ushanka.Properties.Resources.error;
+            this.pp_pictureBox.InitialImage = global::Ushanka.Properties.Resources.loading;
+            this.pp_pictureBox.Location = new System.Drawing.Point(61, 63);
+            this.pp_pictureBox.Name = "pp_pictureBox";
+            this.pp_pictureBox.Size = new System.Drawing.Size(250, 250);
+            this.pp_pictureBox.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
+            this.pp_pictureBox.TabIndex = 7;
+            this.pp_pictureBox.TabStop = false;
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -554,7 +632,7 @@
             this.MaximizeBox = false;
             this.Name = "Form1";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
-            this.Text = "Ushanka  - Alpha 1.2";
+            this.Text = "Ushanka  - Alpha 1.3";
             this.Load += new System.EventHandler(this.Form1_Load);
             this.tabControl1.ResumeLayout(false);
             this.singlePage.ResumeLayout(false);
@@ -571,6 +649,9 @@
             this.settingsPage.ResumeLayout(false);
             this.settingsPage.PerformLayout();
             this.logPage.ResumeLayout(false);
+            this.profilePicturePage.ResumeLayout(false);
+            this.profilePicturePage.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pp_pictureBox)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -620,6 +701,12 @@
         private System.Windows.Forms.Button button1;
         private System.Windows.Forms.TabPage logPage;
         private System.Windows.Forms.RichTextBox logBox;
+        private System.Windows.Forms.TabPage profilePicturePage;
+        private System.Windows.Forms.Button pp_save;
+        private System.Windows.Forms.Label label9;
+        private System.Windows.Forms.Button pp_loadButton;
+        private System.Windows.Forms.TextBox pp_tb_username;
+        private System.Windows.Forms.PictureBox pp_pictureBox;
     }
 }
 
