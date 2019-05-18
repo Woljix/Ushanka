@@ -406,7 +406,7 @@ namespace Ushanka
 
                 try
                 {
-                    _url = Instagram.GetUser(pp_tb_username.Text).ProfilePicture;
+                    _url = Instagram.GetProfilePicture(pp_tb_username.Text) ?? Instagram.GetUser(pp_tb_username.Text).ProfilePicture;
                 }
                 catch
                 {
