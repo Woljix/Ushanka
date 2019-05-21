@@ -76,6 +76,7 @@
             this.MaximizeBox = false;
             this.Name = "aboutForm";
             this.ShowIcon = false;
+            this.ShowInTaskbar = false;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "About!";
             this.Load += new System.EventHandler(this.aboutForm_Load);

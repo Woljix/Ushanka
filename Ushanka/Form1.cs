@@ -73,7 +73,14 @@ namespace Ushanka
             }
             else
             {
-                tabControl1.TabPages.RemoveAt(3);
+               // tabControl1.TabPages.RemoveAt(4);
+                foreach(TabPage tb in tabControl1.TabPages)
+                {
+                    if (tb.Name == "logPage")
+                    {
+                        tabControl1.TabPages.Remove(tb);
+                    }
+                }
             }
 
             CheckForIllegalCrossThreadCalls = false;
@@ -109,8 +116,9 @@ namespace Ushanka
                 "Thank you fow using my pwogwam senpai OwO",
                 "Stop! You have violated the law!",
                 "*Pulls Out Meat Scepter*",
-                "200 Proof",
-                "The hat is hiding something. Maybe you should punch it!"
+                "The hat is hiding something. Maybe you should punch it!",
+                "Fork me on GitHub",
+                "RTX On",
             });
 
             single_randomText.Text = _titles[rdm.Next(0, _titles.Count)];
@@ -248,6 +256,16 @@ namespace Ushanka
                 }
 
                 MessageBox.Show("All Done!", "Voila!", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }
+        }
+
+        private void Single_textBox_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Enter)
+            {
+                single_loadButton.PerformClick();
+                e.SuppressKeyPress = true;
+                e.Handled = true;
             }
         }
 
@@ -392,6 +410,8 @@ namespace Ushanka
             }       
         }
 
+        #region Profile Picture
+
         private string currentPP = string.Empty;
 
         private void Pp_loadButton_Click(object sender, EventArgs e)
@@ -408,9 +428,11 @@ namespace Ushanka
                 {
                     _url = Instagram.GetProfilePicture(pp_tb_username.Text) ?? Instagram.GetUser(pp_tb_username.Text).ProfilePicture;
                 }
-                catch
+                catch (Exception ex)
                 {
                     _url = string.Empty; // Kinda redundant, i know :)
+                    Log.WriteLine("PP Load Error: " + ex.ToString(), LogType.Error);
+                   // Debug.WriteLine(ex.ToString());
                 }
 
                 if (!string.IsNullOrEmpty(_url))
@@ -443,15 +465,7 @@ namespace Ushanka
             }
         }
 
-        private void Single_textBox_KeyDown(object sender, KeyEventArgs e)
-        {
-            if (e.KeyCode == Keys.Enter)
-            {               
-                single_loadButton.PerformClick();
-                e.SuppressKeyPress = true;
-                e.Handled = true;
-            }             
-        }
+        
 
         private void Pp_tb_username_KeyDown(object sender, KeyEventArgs e)
         {
@@ -463,5 +477,6 @@ namespace Ushanka
             }
         }
 
+#endregion
     }
 }
