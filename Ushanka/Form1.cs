@@ -1,4 +1,6 @@
 ﻿using Glastroika.API;
+using InstaDump;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -323,34 +325,34 @@ namespace Ushanka
 
             await Task.Run(() => 
             {
-                multiple_goButton.Enabled = false;
-
-                foreach (string _user in Settings.Loaded.Usernames)
+                try
                 {
-                    User user = Instagram.GetUser(_user);
+                    multiple_goButton.Enabled = false;
 
-                    if (user != null)
+                    foreach (string _user in Settings.Loaded.Usernames)
                     {
-                        label_log_username.Text = user.Username;
+                        Scraper scraper = new Scraper(_user, multiple_getEverything.Checked);
 
-                        string userDownloadFolder = Directory.CreateDirectory(Path.Combine(Settings.Loaded.DownloadLocation, _user)).FullName;
+                        List<string> _media = scraper.DoWork();
 
-                        if (!user.IsPrivate && user.Media.Count > 0)
+                        if (_media != null)
                         {
-                            List<Media> _media = user.Media;
+                            label_log_username.Text = _user;
 
-                            multiple_progressBar.Maximum = _media.Count - 1;
+                            string userDownloadFolder = Directory.CreateDirectory(Path.Combine(Settings.Loaded.DownloadLocation, _user)).FullName;
 
-                            for (int i = 0; i < _media.Count; i++)
+                            if (_media.Count > 0)
                             {
-                                tabControl2.Invoke(new Action(() => 
+                                multiple_progressBar.Maximum = _media.Count - 1;
+
+                                tabControl2.Invoke(new Action(() =>
                                 {
-                                    multiple_progressBar.Value = i;
-
-                                    Media media = _media[i];
-
-                                    foreach (string url in media.URL)
+                                    for (int i = 0; i < _media.Count; i++)
                                     {
+                                        multiple_progressBar.Value = i;
+
+                                        string url = _media[i];
+
                                         string fileName = Path.GetFileName(new Uri(url).LocalPath);
 
                                         label_log_filename.Text = fileName;
@@ -365,23 +367,35 @@ namespace Ushanka
                                     }
                                 }));
                             }
+                            else
+                            {
+                                Echo("User has no content", _user);
+                                Log.WriteLine(string.Format("Username '{0}' is private or has no content!", _user), LogType.Warning);
+                            }
                         }
                         else
                         {
-                            Echo("Username is invalid! Ignoring!", _user);
-                            Log.WriteLine(string.Format("User '{0}' is private or has no content!", _user), LogType.Warning);
+                            Log.WriteLine(string.Format("Username '{0} is invalid! Ignoring!'", _user), LogType.Warning);
                         }
                     }
-                    else
-                    {
-                        Log.WriteLine(string.Format("Username '{0} is invalid! Ignoring!'", _user), LogType.Warning);
 
-                    }
+                    multiple_goButton.Enabled = true;
+
+                    MessageBox.Show("Finished Downloading!", "WOHO!", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 }
+                catch(JsonSerializationException ex)
+                {
+                    string errorMsg = "Some error happened while processing the backend JSON\n" +
+                                      "This is sadly out of my control, so i just recommend restarting the program and/or..\n" +
+                                      "waiting a few seconds before retrying!";
 
-                multiple_goButton.Enabled = true;
-
-                MessageBox.Show("Finished Downloading!", "WOHO!", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    Log.WriteLine(errorMsg);
+                    MessageBox.Show(errorMsg, "Oops", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+                catch (Exception ex)
+                {
+                    Log.WriteLine("Unhandled error while scraping: " + ex.ToString());
+                }             
             });
         }
 
