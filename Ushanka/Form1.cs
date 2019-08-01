@@ -14,6 +14,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using Ushanka.GitHubUpdate;
 
 namespace Ushanka
 {
@@ -24,13 +25,15 @@ namespace Ushanka
 
     public partial class Form1 : Form
     {
+        private UpdateChecker updateChecker;
+
         public WebClient webClient;
         public readonly string SettingsFile = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Settings.json");
 
         public Form1()
         {
             InitializeComponent();
-
+           
             try
             {
                 if (File.Exists(SettingsFile))
@@ -50,6 +53,29 @@ namespace Ushanka
 
         private void Form1_Load(object sender, EventArgs e)
         {
+            updateChecker = new UpdateChecker("Woljix", "Ushanka");
+
+            bool _isLatest = updateChecker.IsLatestRelease();
+
+            Console.WriteLine("Is Latest Release: " + _isLatest);
+
+            if (!_isLatest)
+            {
+                Label _label = new Label();
+                _label.Font = new Font(_label.Font, FontStyle.Bold);
+                _label.Dock = DockStyle.Top;
+                _label.AutoSize = false;
+                _label.TextAlign = ContentAlignment.MiddleCenter;
+                _label.Text = "NEW UPDATE AVAILABLE! CLICK HERE TO GO TO GITHUB!";
+
+                _label.Click += delegate
+                {
+                    Process.Start("https://github.com/Woljix/Ushanka/releases");
+                };
+
+                settingsPage.Controls.Add(_label);
+            }
+
             if (Settings.Loaded.DebugMode)
             {
                 if (logBox == null) return; // Just in case.
@@ -124,6 +150,22 @@ namespace Ushanka
             });
 
             single_randomText.Text = _titles[rdm.Next(0, _titles.Count)];
+        }
+
+        private void Form1_Shown(object sender, EventArgs e)
+        {
+            if (Settings.Loaded.CheckForUpdates)
+            {
+                UpdateChecker updateChecker = new UpdateChecker("Woljix", "Ushanka");
+
+                if (!updateChecker.IsLatestRelease())
+                {
+                    if (new UpdateForm(updateChecker).ShowDialog() == DialogResult.OK)
+                    {
+                        Console.WriteLine("AGREED");
+                    }
+                }
+            }
         }
 
         #region Single
@@ -331,52 +373,42 @@ namespace Ushanka
 
                     foreach (string _user in Settings.Loaded.Usernames)
                     {
-                        Scraper scraper = new Scraper(_user, multiple_getEverything.Checked);
+                        User user = Instagram.GetUser(_user, multiple_getEverything.Checked);
 
-                        List<string> _media = scraper.DoWork();
-
-                        if (_media != null)
+                        if (user != null)
                         {
                             label_log_username.Text = _user;
 
                             string userDownloadFolder = Directory.CreateDirectory(Path.Combine(Settings.Loaded.DownloadLocation, _user)).FullName;
 
-                            if (_media.Count > 0)
+                            if (!user.IsPrivate && user.Media.Count > 0)
                             {
-                                multiple_progressBar.Maximum = _media.Count - 1;
+                                multiple_progressBar.Maximum = user.Media.Count - 1;
 
                                 tabControl2.Invoke(new Action(() =>
                                 {
-                                    for (int i = 0; i < _media.Count; i++)
+                                    for (int i = 0; i < user.Media.Count; i++)
                                     {
                                         multiple_progressBar.Value = i;
 
-                                        string url = _media[i];
+                                        foreach(string url in user.Media[i].URL)
+                                        {
+                                            string fileName = Path.GetFileName(new Uri(url).LocalPath);
 
-                                        string fileName = Path.GetFileName(new Uri(url).LocalPath);
+                                            label_log_filename.Text = fileName;
 
-                                        label_log_filename.Text = fileName;
+                                            Echo(string.Format("Downloading: '{0}'", fileName), _user);
+                                            Log.WriteLine(string.Format("<{0}> Downloading: '{1}'", _user, fileName));
 
-                                        Echo(string.Format("Downloading: '{0}'", fileName), _user);
-                                        Log.WriteLine(string.Format("<{0}> Downloading: '{1}'", _user, fileName));
+                                            string fileToBe = Path.Combine(userDownloadFolder, fileName);
 
-                                        string fileToBe = Path.Combine(userDownloadFolder, fileName);
-
-                                        if (!File.Exists(fileToBe))
-                                            webClient.DownloadFile(url, fileToBe);
+                                            if (!File.Exists(fileToBe))
+                                                webClient.DownloadFile(url, fileToBe);
+                                        }
                                     }
                                 }));
                             }
-                            else
-                            {
-                                Echo("User has no content", _user);
-                                Log.WriteLine(string.Format("Username '{0}' is private or has no content!", _user), LogType.Warning);
-                            }
-                        }
-                        else
-                        {
-                            Log.WriteLine(string.Format("Username '{0} is invalid! Ignoring!'", _user), LogType.Warning);
-                        }
+                        }  
                     }
 
                     multiple_goButton.Enabled = true;
@@ -491,6 +523,13 @@ namespace Ushanka
             }
         }
 
-#endregion
+        #endregion
+
+        private void SettingsPage_Enter(object sender, EventArgs e)
+        {
+
+
+            Debug.WriteLine("SETTINGS FOCUSED!" );
+        }
     }
 }

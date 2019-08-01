@@ -41,6 +41,7 @@
             this.single_textBox = new System.Windows.Forms.TextBox();
             this.single_pictureBox = new System.Windows.Forms.PictureBox();
             this.multiplePage = new System.Windows.Forms.TabPage();
+            this.multiple_getEverything = new System.Windows.Forms.CheckBox();
             this.tabControl2 = new System.Windows.Forms.TabControl();
             this.tabPage2 = new System.Windows.Forms.TabPage();
             this.progressHelp = new System.Windows.Forms.Label();
@@ -78,7 +79,6 @@
             this.logPage = new System.Windows.Forms.TabPage();
             this.logBox = new System.Windows.Forms.RichTextBox();
             this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
-            this.multiple_getEverything = new System.Windows.Forms.CheckBox();
             this.tabControl1.SuspendLayout();
             this.singlePage.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.single_pictureBox)).BeginInit();
@@ -237,6 +237,17 @@
             this.multiplePage.TabIndex = 0;
             this.multiplePage.Text = "Multiple";
             this.multiplePage.UseVisualStyleBackColor = true;
+            // 
+            // multiple_getEverything
+            // 
+            this.multiple_getEverything.AutoSize = true;
+            this.multiple_getEverything.Location = new System.Drawing.Point(9, 412);
+            this.multiple_getEverything.Name = "multiple_getEverything";
+            this.multiple_getEverything.Size = new System.Drawing.Size(96, 17);
+            this.multiple_getEverything.TabIndex = 10;
+            this.multiple_getEverything.Text = "Get Everything";
+            this.toolTip1.SetToolTip(this.multiple_getEverything, "This will try to get everything instead of the 12 first items.");
+            this.multiple_getEverything.UseVisualStyleBackColor = true;
             // 
             // tabControl2
             // 
@@ -623,17 +634,6 @@
             this.logBox.Text = "";
             this.logBox.WordWrap = false;
             // 
-            // multiple_getEverything
-            // 
-            this.multiple_getEverything.AutoSize = true;
-            this.multiple_getEverything.Location = new System.Drawing.Point(9, 412);
-            this.multiple_getEverything.Name = "multiple_getEverything";
-            this.multiple_getEverything.Size = new System.Drawing.Size(96, 17);
-            this.multiple_getEverything.TabIndex = 10;
-            this.multiple_getEverything.Text = "Get Everything";
-            this.toolTip1.SetToolTip(this.multiple_getEverything, "This will try to get everything instead of the 12 first items.");
-            this.multiple_getEverything.UseVisualStyleBackColor = true;
-            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -645,8 +645,9 @@
             this.MaximizeBox = false;
             this.Name = "Form1";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
-            this.Text = "Ushanka  - Alpha 1.3.2";
+            this.Text = "Ushanka  - Alpha 1.3.3";
             this.Load += new System.EventHandler(this.Form1_Load);
+            this.Shown += new System.EventHandler(this.Form1_Shown);
             this.tabControl1.ResumeLayout(false);
             this.singlePage.ResumeLayout(false);
             this.singlePage.PerformLayout();

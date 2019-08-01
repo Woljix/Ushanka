@@ -36,5 +36,6 @@ namespace Ushanka
 
         public bool SpecialMode { get; set; } = false; // Made for my friend.
         public bool DebugMode { get; set; } = false;
+        public bool CheckForUpdates { get; set; } = false;
     }
 }
