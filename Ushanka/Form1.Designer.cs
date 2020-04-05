@@ -39,7 +39,6 @@
             this.label1 = new System.Windows.Forms.Label();
             this.single_loadButton = new System.Windows.Forms.Button();
             this.single_textBox = new System.Windows.Forms.TextBox();
-            this.single_pictureBox = new System.Windows.Forms.PictureBox();
             this.multiplePage = new System.Windows.Forms.TabPage();
             this.multiple_getEverything = new System.Windows.Forms.CheckBox();
             this.tabControl2 = new System.Windows.Forms.TabControl();
@@ -63,7 +62,6 @@
             this.label9 = new System.Windows.Forms.Label();
             this.pp_loadButton = new System.Windows.Forms.Button();
             this.pp_tb_username = new System.Windows.Forms.TextBox();
-            this.pp_pictureBox = new System.Windows.Forms.PictureBox();
             this.settingsPage = new System.Windows.Forms.TabPage();
             this.button1 = new System.Windows.Forms.Button();
             this.label8 = new System.Windows.Forms.Label();
@@ -79,18 +77,21 @@
             this.logPage = new System.Windows.Forms.TabPage();
             this.logBox = new System.Windows.Forms.RichTextBox();
             this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
+            this.single_pictureBox = new System.Windows.Forms.PictureBox();
+            this.pp_pictureBox = new System.Windows.Forms.PictureBox();
+            this.button_openDownloads = new System.Windows.Forms.Button();
             this.tabControl1.SuspendLayout();
             this.singlePage.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.single_pictureBox)).BeginInit();
             this.multiplePage.SuspendLayout();
             this.tabControl2.SuspendLayout();
             this.tabPage2.SuspendLayout();
             this.panel1.SuspendLayout();
             this.tabPage1.SuspendLayout();
             this.profilePicturePage.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.pp_pictureBox)).BeginInit();
             this.settingsPage.SuspendLayout();
             this.logPage.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.single_pictureBox)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pp_pictureBox)).BeginInit();
             this.SuspendLayout();
             // 
             // tabControl1
@@ -209,17 +210,6 @@
             this.single_textBox.TabIndex = 1;
             this.single_textBox.Text = "Bttnh-EBv89";
             this.single_textBox.KeyDown += new System.Windows.Forms.KeyEventHandler(this.Single_textBox_KeyDown);
-            // 
-            // single_pictureBox
-            // 
-            this.single_pictureBox.ErrorImage = global::Ushanka.Properties.Resources.error;
-            this.single_pictureBox.InitialImage = global::Ushanka.Properties.Resources.loading;
-            this.single_pictureBox.Location = new System.Drawing.Point(61, 63);
-            this.single_pictureBox.Name = "single_pictureBox";
-            this.single_pictureBox.Size = new System.Drawing.Size(250, 250);
-            this.single_pictureBox.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
-            this.single_pictureBox.TabIndex = 0;
-            this.single_pictureBox.TabStop = false;
             // 
             // multiplePage
             // 
@@ -473,19 +463,9 @@
             this.pp_tb_username.Text = "belle.delphine";
             this.pp_tb_username.KeyDown += new System.Windows.Forms.KeyEventHandler(this.Pp_tb_username_KeyDown);
             // 
-            // pp_pictureBox
-            // 
-            this.pp_pictureBox.ErrorImage = global::Ushanka.Properties.Resources.error;
-            this.pp_pictureBox.InitialImage = global::Ushanka.Properties.Resources.loading;
-            this.pp_pictureBox.Location = new System.Drawing.Point(61, 63);
-            this.pp_pictureBox.Name = "pp_pictureBox";
-            this.pp_pictureBox.Size = new System.Drawing.Size(250, 250);
-            this.pp_pictureBox.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
-            this.pp_pictureBox.TabIndex = 7;
-            this.pp_pictureBox.TabStop = false;
-            // 
             // settingsPage
             // 
+            this.settingsPage.Controls.Add(this.button_openDownloads);
             this.settingsPage.Controls.Add(this.button1);
             this.settingsPage.Controls.Add(this.label8);
             this.settingsPage.Controls.Add(this.label7);
@@ -562,6 +542,7 @@
             // 
             // button_logLocation
             // 
+            this.button_logLocation.Enabled = false;
             this.button_logLocation.Location = new System.Drawing.Point(297, 119);
             this.button_logLocation.Name = "button_logLocation";
             this.button_logLocation.Size = new System.Drawing.Size(76, 23);
@@ -574,6 +555,7 @@
             // 
             this.settings_logTextBox.Location = new System.Drawing.Point(8, 121);
             this.settings_logTextBox.Name = "settings_logTextBox";
+            this.settings_logTextBox.ReadOnly = true;
             this.settings_logTextBox.Size = new System.Drawing.Size(286, 20);
             this.settings_logTextBox.TabIndex = 4;
             // 
@@ -634,6 +616,38 @@
             this.logBox.Text = "";
             this.logBox.WordWrap = false;
             // 
+            // single_pictureBox
+            // 
+            this.single_pictureBox.ErrorImage = global::Ushanka.Properties.Resources.error;
+            this.single_pictureBox.InitialImage = global::Ushanka.Properties.Resources.loading;
+            this.single_pictureBox.Location = new System.Drawing.Point(61, 63);
+            this.single_pictureBox.Name = "single_pictureBox";
+            this.single_pictureBox.Size = new System.Drawing.Size(250, 250);
+            this.single_pictureBox.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
+            this.single_pictureBox.TabIndex = 0;
+            this.single_pictureBox.TabStop = false;
+            // 
+            // pp_pictureBox
+            // 
+            this.pp_pictureBox.ErrorImage = global::Ushanka.Properties.Resources.error;
+            this.pp_pictureBox.InitialImage = global::Ushanka.Properties.Resources.loading;
+            this.pp_pictureBox.Location = new System.Drawing.Point(61, 63);
+            this.pp_pictureBox.Name = "pp_pictureBox";
+            this.pp_pictureBox.Size = new System.Drawing.Size(250, 250);
+            this.pp_pictureBox.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
+            this.pp_pictureBox.TabIndex = 7;
+            this.pp_pictureBox.TabStop = false;
+            // 
+            // button_openDownloads
+            // 
+            this.button_openDownloads.Location = new System.Drawing.Point(8, 175);
+            this.button_openDownloads.Name = "button_openDownloads";
+            this.button_openDownloads.Size = new System.Drawing.Size(365, 23);
+            this.button_openDownloads.TabIndex = 11;
+            this.button_openDownloads.Text = "Open Downloads Folder";
+            this.button_openDownloads.UseVisualStyleBackColor = true;
+            this.button_openDownloads.Click += new System.EventHandler(this.button_openDownloads_Click);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -645,13 +659,12 @@
             this.MaximizeBox = false;
             this.Name = "Form1";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
-            this.Text = "Ushanka  - Alpha 1.3.3";
+            this.Text = "Ushanka  - Alpha 1.3.4";
             this.Load += new System.EventHandler(this.Form1_Load);
             this.Shown += new System.EventHandler(this.Form1_Shown);
             this.tabControl1.ResumeLayout(false);
             this.singlePage.ResumeLayout(false);
             this.singlePage.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.single_pictureBox)).EndInit();
             this.multiplePage.ResumeLayout(false);
             this.multiplePage.PerformLayout();
             this.tabControl2.ResumeLayout(false);
@@ -662,10 +675,11 @@
             this.tabPage1.PerformLayout();
             this.profilePicturePage.ResumeLayout(false);
             this.profilePicturePage.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.pp_pictureBox)).EndInit();
             this.settingsPage.ResumeLayout(false);
             this.settingsPage.PerformLayout();
             this.logPage.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.single_pictureBox)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pp_pictureBox)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -722,6 +736,7 @@
         private System.Windows.Forms.TextBox pp_tb_username;
         private System.Windows.Forms.PictureBox pp_pictureBox;
         private System.Windows.Forms.CheckBox multiple_getEverything;
+        private System.Windows.Forms.Button button_openDownloads;
     }
 }
 

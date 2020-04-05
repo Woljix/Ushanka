@@ -10,6 +10,7 @@ using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Net;
+using System.Security.Cryptography;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -113,6 +114,9 @@ namespace Ushanka
 
             CheckForIllegalCrossThreadCalls = false;
 
+            single_textBox.Text = (!string.IsNullOrEmpty(Settings.Loaded.DefaultSingleID)) ? Settings.Loaded.DefaultSingleID : single_textBox.Text;
+            pp_tb_username.Text = (!string.IsNullOrEmpty(Settings.Loaded.DefaultProfilePicture)) ? Settings.Loaded.DefaultProfilePicture : pp_tb_username.Text;
+
             settings_downloadTextBox.Text = Settings.Loaded.DownloadLocation;
             settings_logTextBox.Text = Settings.Loaded.LogLocation;
 
@@ -147,6 +151,19 @@ namespace Ushanka
                 "The hat is hiding something. Maybe you should punch it!",
                 "Fork me on GitHub",
                 "RTX On",
+                "Rise and Shine, Mr. Freeman.",
+                "Do you actually read these?",
+                "Don't tell Instagram about this, ok?",
+                "A lil rusty around the edges!",
+                "Pointless Updates Around The Clock!",
+                "Contains a few bu- I MEAN FEATURES!",
+                "ONE TAKE!",
+                "Bodging Works!",
+                "So.. ehm.. seen any good movies lately?",
+                "I'll be back.",
+                "Achievment Unlocked: Questionable Decisions.",
+                "sudo shutdown now",
+                "Look, sir! Droids!",
             });
 
             single_randomText.Text = _titles[rdm.Next(0, _titles.Count)];
@@ -317,19 +334,62 @@ namespace Ushanka
 
         #region Settings
 
+        private string meme_lastSaveHash = string.Empty;
+        private int meme_saveStreak = -1;
+
         private void button_save_Click(object sender, EventArgs e)
         {
             try
             {
-                Save();
+                string _hash = Save();
 
-                MessageBox.Show("Settings Saved!", "TADA!", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                if (string.IsNullOrEmpty(meme_lastSaveHash))
+                    meme_lastSaveHash = _hash;
+
+                if (_hash == meme_lastSaveHash)
+                    meme_saveStreak++;
+                else
+                    meme_saveStreak = 0;
+
+                switch (meme_saveStreak)
+                {
+
+                    case 0: MessageBox.Show("Settings Saved!", "TADA!", MessageBoxButtons.OK, MessageBoxIcon.Information); break;
+                    case 1: MessageBox.Show("Double Save!", "TADA!", MessageBoxButtons.OK, MessageBoxIcon.Information); break;
+                    case 2: MessageBox.Show("Triple Save!", "TADA!", MessageBoxButtons.OK, MessageBoxIcon.Information); break;
+                    case 3: MessageBox.Show("Ultra Save!", "TADA!", MessageBoxButtons.OK, MessageBoxIcon.Information); break;
+                    case 4: MessageBox.Show("MONSTER SAVE!!!", "TADA!", MessageBoxButtons.OK, MessageBoxIcon.Information); break;
+                    case 5: MessageBox.Show("SAVING SPREE!", "TADA!", MessageBoxButtons.OK, MessageBoxIcon.Information); break;
+                    case 6: MessageBox.Show("RAMPAGE!", "TADA!", MessageBoxButtons.OK, MessageBoxIcon.Information); break;
+                    case 7: MessageBox.Show("DOMINATING!", "TADA!", MessageBoxButtons.OK, MessageBoxIcon.Information); break;
+                    case 8: MessageBox.Show("UNSTOPPABLE!", "TADA!", MessageBoxButtons.OK, MessageBoxIcon.Information); break;
+                    case 9: MessageBox.Show("GODLIKE!", "TADA!", MessageBoxButtons.OK, MessageBoxIcon.Information); break;
+                    default: case 10: MessageBox.Show("HOOOOOOOOLY SHIIIT!!!", ":O", MessageBoxButtons.OK, MessageBoxIcon.Information); break;
+                    case 20: MessageBox.Show("HOOOOOOOOLY SHIIIT!!!", ":O", MessageBoxButtons.OK, MessageBoxIcon.Information); break;
+                    case 21: MessageBox.Show("HOOOOOOLY SHIIT!!", ":O", MessageBoxButtons.OK, MessageBoxIcon.Information); break;
+                    case 22: MessageBox.Show("HOOOLY SHIT!!", ":o", MessageBoxButtons.OK, MessageBoxIcon.Information); break;
+                    case 23: MessageBox.Show("HOLY SHIT!", ":o", MessageBoxButtons.OK, MessageBoxIcon.Information); break;
+                    case 24: MessageBox.Show("H-HOLY.. SHIT", ":o", MessageBoxButtons.OK, MessageBoxIcon.Information); break;
+                    case 25: MessageBox.Show("Ehm..", ":I", MessageBoxButtons.OK, MessageBoxIcon.Information); break;
+                    case 26: MessageBox.Show("You still not tired of pressing Save, ey?", ":I", MessageBoxButtons.OK, MessageBoxIcon.Information); break;
+                    case 27: MessageBox.Show("Well, you do you, bro! I'll go back to saying holy shit now.", ":I", MessageBoxButtons.OK, MessageBoxIcon.Information); break;
+                }
+
+                meme_lastSaveHash = _hash;
             }
             catch (Exception ex)
             {
                 MessageBox.Show("Unhandled Error!", "OH NOES!", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 Log.WriteLine("Unhandled error: " + ex.Message, LogType.Error);
-            }          
+            }  
+            
+            //try
+            //{
+            //     Save();
+
+            //     MessageBox.Show("Settings Saved!", "TADA!", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            //}
+        
         }
 
         private void button_downloadLocation_Click(object sender, EventArgs e)
@@ -433,16 +493,18 @@ namespace Ushanka
 
         #endregion
 
-        public void Save()
+        public string Save()
         {
             Settings.Loaded.DownloadLocation = settings_downloadTextBox.Text;
             Settings.Loaded.LogLocation = settings_logTextBox.Text;
 
             Settings.Loaded.Usernames = multiple_usernameBox.Text.Split(new[] { "\n" }, StringSplitOptions.RemoveEmptyEntries).ToList();
 
-            Settings.Save(SettingsFile);
+            string _hash =Settings.Save(SettingsFile);
 
             Log.WriteLine("Settings Saved!");
+
+            return _hash;
         }
 
         private void Echo(string Text, string Username)
@@ -527,9 +589,21 @@ namespace Ushanka
 
         private void SettingsPage_Enter(object sender, EventArgs e)
         {
-
-
             Debug.WriteLine("SETTINGS FOCUSED!" );
+        }
+
+        private void button_openDownloads_Click(object sender, EventArgs e)
+        {
+            string _dir = settings_downloadTextBox.Text;
+
+            if (Directory.Exists(_dir))
+            {
+                Process.Start("explorer.exe", _dir);
+            }
+            else
+            {
+                MessageBox.Show("Download location is not valid!", "Sowwy!", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            }
         }
     }
 }
