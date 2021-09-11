@@ -64,6 +64,7 @@ namespace Ushanka.GitHubUpdate
 
         public bool IsLatestRelease()
         {
+            /*
             int local_productVersion = Convert.ToInt32(Application.ProductVersion.Replace(".", ""));
             int remote_productVersion = Convert.ToInt32(UpdateData.Tag.Replace(".", ""));
 
@@ -71,6 +72,29 @@ namespace Ushanka.GitHubUpdate
             Console.WriteLine("Remote Version: " + remote_productVersion);
 
             return local_productVersion >= remote_productVersion;
+            */
+
+            try
+            {
+                int localProductionVersion = 0;
+                int remoteProductionVersion = 0;
+
+                if (!Int32.TryParse(Application.ProductVersion.Replace(".", ""), out localProductionVersion))
+                {
+                    Console.WriteLine("Local Version failed!");
+                }
+
+                if (!Int32.TryParse(UpdateData.Tag.Replace(".", ""), out remoteProductionVersion))
+                {
+                    Console.WriteLine("Remote Version failed!");
+                }
+
+                return localProductionVersion >= remoteProductionVersion;
+            }
+            catch
+            {
+                return true;
+            }     
         }
     }
 

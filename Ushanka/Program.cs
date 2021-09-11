@@ -14,7 +14,7 @@ namespace Ushanka
         /// </summary>
         [STAThread]
         static void Main()
-        {         
+        {
             using (Mutex mutex = new Mutex(false, @"Global\WoljixSoftware-Ushanka"))
             {
                 GC.KeepAlive(mutex);
@@ -23,7 +23,7 @@ namespace Ushanka
 
                 if (!createdNew)
                 {
-                    Environment.CurrentDirectory = AppDomain.CurrentDomain.BaseDirectory; // Dirty fix.
+                    Environment.CurrentDirectory = AppContext.BaseDirectory; // Dirty fix.
 
                     Application.EnableVisualStyles();
                     Application.SetCompatibleTextRenderingDefault(false);
@@ -34,6 +34,10 @@ namespace Ushanka
                     MessageBox.Show("Only one instance allowed!", "", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 }
             }
+
+            //Application.EnableVisualStyles();
+            //Application.SetCompatibleTextRenderingDefault(false);
+            //Application.Run(new Form1());
         }
     }
 }

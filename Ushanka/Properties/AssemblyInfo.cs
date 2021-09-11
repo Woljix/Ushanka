@@ -10,7 +10,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Woljix Software")]
 [assembly: AssemblyProduct("Ushanka")]
-[assembly: AssemblyCopyright("Copyright © Woljix Software 2020")]
+[assembly: AssemblyCopyright("Copyright © Woljix Software 2021")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 

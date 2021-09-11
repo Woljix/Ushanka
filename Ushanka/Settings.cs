@@ -60,7 +60,7 @@ namespace Ushanka
         public bool DebugMode { get; set; } = false;
         public bool CheckForUpdates { get; set; } = true;
 
-        public string DefaultProfilePicture { get; set; } = "";
-        public string DefaultSingleID { get; set; } = "";
+        public string DefaultProfilePicture { get; set; } = string.Empty;
+        public string DefaultSingleID { get; set; } = string.Empty;
     }
 }

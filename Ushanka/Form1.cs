@@ -29,7 +29,7 @@ namespace Ushanka
         private UpdateChecker updateChecker;
 
         public WebClient webClient;
-        public readonly string SettingsFile = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Settings.json");
+        public readonly string SettingsFile = Path.Combine(AppContext.BaseDirectory, "Settings.json");
 
         public Form1()
         {
@@ -71,7 +71,12 @@ namespace Ushanka
 
                 _label.Click += delegate
                 {
-                    Process.Start("https://github.com/Woljix/Ushanka/releases");
+                    Process.Start(new ProcessStartInfo
+                    {
+                        FileName = "https://github.com/Woljix/Ushanka/releases",
+                        UseShellExecute = true
+                    });
+                    //Process.Start("https://github.com/Woljix/Ushanka/releases");
                 };
 
                 settingsPage.Controls.Add(_label);
@@ -102,8 +107,8 @@ namespace Ushanka
             }
             else
             {
-               // tabControl1.TabPages.RemoveAt(4);
-                foreach(TabPage tb in tabControl1.TabPages)
+                // tabControl1.TabPages.RemoveAt(4);
+                foreach (TabPage tb in tabControl1.TabPages)
                 {
                     if (tb.Name == "logPage")
                     {
@@ -173,15 +178,15 @@ namespace Ushanka
         {
             if (Settings.Loaded.CheckForUpdates)
             {
-                UpdateChecker updateChecker = new UpdateChecker("Woljix", "Ushanka");
+                //UpdateChecker updateChecker = new UpdateChecker("Woljix", "Ushanka");
 
-                if (!updateChecker.IsLatestRelease())
-                {
-                    if (new UpdateForm(updateChecker).ShowDialog() == DialogResult.OK)
-                    {
-                        Console.WriteLine("AGREED");
-                    }
-                }
+                //if (!updateChecker.IsLatestRelease())
+                //{
+                //    if (new UpdateForm(updateChecker).ShowDialog() == DialogResult.OK)
+                //    {
+                //        Console.WriteLine("AGREED");
+                //    }
+                //}
             }
         }
 
